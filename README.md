@@ -1,13 +1,10 @@
+# pass-1password
 
-| Branch | Status |
-|--------|--------|
-| [**master**](https://github.com/tadfisher/pass-otp/tree/master) | [![Build Status: master](https://travis-ci.org/tadfisher/pass-otp.svg?branch=master)](https://travis-ci.org/tadfisher/pass-otp) |
-| [**develop**](https://github.com/tadfisher/pass-otp/tree/develop) | [![Build Status: develop](https://travis-ci.org/tadfisher/pass-otp.svg?branch=develop)](https://travis-ci.org/tadfisher/pass-otp) |
+A [pass](https://www.passwordstore.org/) extension for using 1password accounts
+(using the `op` command-line).
 
-# pass-otp
-
-A [pass](https://www.passwordstore.org/) extension for managing
-one-time-password (OTP) tokens.
+**Warning:** To get started, this is a fork of pass-otp and the plugis is not
+yet implemented.
 
 ## Usage
 
@@ -40,70 +37,7 @@ More information may be found in the pass-otp(1) man page.
 
 ## Examples
 
-Prompt for an OTP token, hiding input:
-
-```
-$ pass otp insert totp-secret
-Enter otpauth:// URI for totp-secret:
-Retype otpauth:// URI for totp-secret:
-```
-
-Prompt for an OTP token, echoing input:
-
-```
-$ pass otp insert -e totp-secret
-Enter otpauth:// URI for totp-secret: otpauth://totp/totp-secret?secret=AAAAAAAAAAAAAAAA&issuer=totp-secret
-```
-
-Pipe an `otpauth://` URI into a passfile:
-
-```
-$ pass otp insert totp-secret < totp-secret.txt
-```
-
-Use [zbar](http://zbar.sourceforge.net/) to decode a QR image into a passfile:
-
-```
-$ zbarimg -q --raw qrcode.png | pass otp insert totp-secret
-```
-
-The same, but appending to an existing passfile:
-
-```
-$ zbarimg -q --raw google-qrcode.png | pass otp append google/example@gmail.com
-```
-
-Generate a 2FA code using this token:
-
-```
-$ pass otp totp-secret
-698816
-```
-
-Display a QR code for an OTP token:
-
-```
-$ pass otp uri -q totp-secret
-█████████████████████████████████████
-█████████████████████████████████████
-████ ▄▄▄▄▄ ██▄▄ ▀█  ▀  █▀█ ▄▄▄▄▄ ████
-████ █   █ █▀▄  █▀▀▄▀▀██ █ █   █ ████
-████ █▄▄▄█ █▄▀ █▄▄▄ █▀▀▄ █ █▄▄▄█ ████
-████▄▄▄▄▄▄▄█▄▀▄█ ▀ █▄█ ▀▄█▄▄▄▄▄▄▄████
-████▄▄▀██▄▄ ▀▄ █▄█▀ ▀▄▀▀▄▀█▀ ▄▀██████
-████  ▀▄▀ ▄▀ ▄▀ ▄▄ ▄ ███ ██ █ ███████
-████▀▀ ▄▄█▄▄▄▄ █ █ ▀███▀▄▀  ▀▀█  ████
-████▀▄▀ ▀ ▄█▀▄██ ▀▀▄██▀█▀▄▀▀  ▀█▀████
-████▀ █▀ ▄▄██ █▀▄▄▄   ▄▀ ▄▀ ▀ ▄▀▀████
-████ ▄ ▀█ ▄█▄ ▀ ▄██▄▀██▄ ▀▀▀█ ▄▀ ████
-████▄█▄▄▄█▄▄ █▄▄ ▀█ █▄█▀ ▄▄▄ █▄█▄████
-████ ▄▄▄▄▄ █ ▄▀▀▀▀▄ █▄▄  █▄█ ███▀████
-████ █   █ ██▀▄ █▄█ ▀█▀   ▄▄▄█▀▄ ████
-████ █▄▄▄█ █▀▄ █  █  ██▄▄▀ ▀▄█ ▄▀████
-████▄▄▄▄▄▄▄█▄█▄▄███▄█▄█▄█▄█▄██▄██████
-█████████████████████████████████████
-█████████████████████████████████████
-```
+TBD
 
 ## Installation
 
@@ -115,126 +49,22 @@ cd pass-otp
 sudo make install
 ```
 
-### Arch Linux
+### Others
 
-`pass-otp` is available in the `[community]` repository:
-
-```
-pacman -S pass-otp
-```
-
-### Gentoo Linux
-
-```
-emerge app-admin/pass-otp
-```
-
-### NixOS
-
-- `configuration.nix`
-
-System-wide:
-
-```nix
-{
-  environment.systemPackages = [ pkgs.pass-otp ];
-}
-```
-
-Per-user:
-
-```nix
-{
-  users.users."name".packages = [ pkgs.pass-otp ];
-}
-```
-
-- Imperative
-
-```
-nix-env -i pass-otp
-```
-
-### macOS
-#### Brew
-```
-brew install oath-toolkit
-git clone https://github.com/tadfisher/pass-otp
-cd pass-otp
-make install PREFIX=/usr/local
-```
-
-#### Macports.org
-```
-sudo port install pass-otp
-```
-
-### openSUSE
-
-```
-zypper install pass-otp
-```
+Please contribute
 
 ## Requirements
 
 - `pass` 1.7.0 or later for extension support
-- `oathtool` for generating 2FA codes
-- `qrencode` for generating QR code images
+- `op` for 1password
 
 ### Build requirements
 
 - `make test`
   - `pass` >= 1.7.0
   - `git`
-  - `oathtool`
+  - `op`
   - `expect`
 - `make lint`
   - `shellcheck`
 
-## Migrating from pass-otp 0.1
-
-`pass-otp` has switched to storing OTP tokens in the
-standard
-[Key Uri Format](https://github.com/google/google-authenticator/wiki/Key-Uri-Format).
-You'll need to edit any saved tokens and change them to this format. For
-example:
-
-```
-$ pass edit totp-secret
-```
-
-Old format:
-
-```
-otp_secret: AAAAAAAAAAAAAAAA
-otp_type: totp
-otp_algorithm: sha1
-otp_period: 30
-otp_digits: 6
-```
-
-New format:
-
-```
-otpauth://totp/totp-secret?secret=AAAAAAAAAAAAAAAA&issuer=totp-secret
-```
-
-Note that the following default values do not need to be specified in the URI:
-
-| parameter | default |
-| --------- | ------- |
-| algorithm | sha1    |
-| period    | 30      |
-| digits    | 6       |
-
-## Migrating from Google Authenticator
-
-**Warning:** This method is provided as a means to transport your TOTP tokens to
-other devices, disconnected from your single factor authentication part. If you
-add those secrets into the same basket of eggs, you will be defeating the whole
-purpose of the [multi factor
-authentication](https://en.wikipedia.org/wiki/Multi-factor_authentication)
-mantra. Please think it through before running this migration.
-
-If you read the warning paragraph above, [keep calm and move on with the
-migration](https://github.com/tadfisher/pass-otp/wiki/How-to-migrate-your-Google-Authenticator-database-to-pass-otp%3F).
